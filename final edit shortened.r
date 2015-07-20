@@ -1,4 +1,4 @@
-##Nicholas Corpuz & Khagay Nagdimov
+## Nicholas Corpuz & Khagay Nagdimov
 ## Legal Aid Statistical Tool, Graphical User Interface
 
 #------------------------------------------------------------------------------------------------------------------------------
@@ -92,6 +92,8 @@ quantName$setWidthChars(30)
 quantLabel$setMnemonicWidget(quantName)
 # pack in the filename object into the horizontal box
 hbox$packStart(quantName , FALSE , FALSE , 0) 
+
+# add an entry to input suspect's alleles 
 
 # once user click the "ok" button, a function that will write to the file will be called 
 buttonOK <- gtkButtonNewFromStock("gtk-ok")
