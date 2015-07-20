@@ -1,4 +1,4 @@
-## Nicholas Corpuz & Khagay Nagdimov
+##Nicholas Corpuz & Khagay Nagdimov
 ## Legal Aid Statistical Tool, Graphical User Interface
 
 #------------------------------------------------------------------------------------------------------------------------------
@@ -37,10 +37,10 @@ saveUserInput <- function( ... ){
   headerAndUserInput[2 , 2] <- the.locus 
   
   # save the quant number into the matrix 
-  the.matrix <-
+  the.quant <- quantName$getText()
+  headerAndUserInput[2 , 7] <- the.quant 
   
   write.matrix(headerAndUserInput, file = "C:/Users/KNagdimov@legal-aid.org/Desktop/DataEntry.csv" , sep = ",") 
-  
 }
 
 #-------------------------------------------------------------------------------------------------------------------------
@@ -62,42 +62,67 @@ frame$add(vbox)
 hbox = gtkHBoxNew(FALSE , 8)
 # we packstarted the horizontal box into the vertical box 
 vbox$packStart(hbox , FALSE , FALSE , 0)# -----------------------------VBOX 
-
-
+#-------------------------------------------------------------------------------------------------------------------------
 # add a label to the vertical box 
 suspectLabel = gtkLabelNewWithMnemonic("_Suspect Name")
 hbox$packStart(suspectLabel , FALSE , FALSE , 0) # ----------------------------VBOX
 
 # add an entry in the second column; named "suspectName"
 suspectName = gtkEntryNew() # create a new entry for USER INPUT!
-suspectName$setWidthChars(30)
+suspectName$setWidthChars(20)
 suspectLabel$setMnemonicWidget(suspectName)
 # pack in the filename object into the horizontal box
 hbox$packStart(suspectName , FALSE , FALSE , 0) 
-
+#-------------------------------------------------------------------------------------------------------------------------
 #create user input for locus's name 
 locusLabel = gtkLabelNewWithMnemonic("_Locus")
 hbox$packStart(locusLabel , FALSE , FALSE , 0)
 locusName = gtkEntryNew() # handles user input
-locusName$setWidthChars(30)
+locusName$setWidthChars(10)
 hbox$packStart(locusName , FALSE , FALSE , 0)
+#-------------------------------------------------------------------------------------------------------------------------
+# offer the user the ability to input the suspect's alleles 
+suspectsAllelesLabel = gtkLabelNewWithMnemonic("_Suspect's Alleles")
+hbox$packStart(suspectsAllelesLabel , FALSE , FALSE , 0 )
 
-# add a label to the vertical box 
-quantLabel = gtkLabelNewWithMnemonic("_Quant")
+suspectsAllelesName = gtkEntryNew() 
+gtkEntryNew$setWidthChars(15)
+suspectsAllelesName$setMnemonicWidget(suspectsAllelesName)
+hbox$packStart(suspectsAllelesName)
+
+#-------------------------------------------------------------------------------------------------------------------------
+# add the quant
+hbox = gtkHBoxNew(FALSE , 8)
+vbox$packStart(hbox , FALSE , FALSE , 0)
+
+quantLabel = gtkLabelNewWithMnemonic("_Quantitation")
 hbox$packStart(quantLabel , FALSE , FALSE , 0) # ----------------------------VBOX
 
 # add an entry in the second column; named "Quant"
 quantName = gtkEntryNew() # create a new entry for USER INPUT!
-quantName$setWidthChars(30)
+quantName$setWidthChars(10)
 quantLabel$setMnemonicWidget(quantName)
 # pack in the filename object into the horizontal box
 hbox$packStart(quantName , FALSE , FALSE , 0) 
+#-------------------------------------------------------------------------------------------------------------------------
 
-# add an entry to input suspect's alleles 
+# contributors 
+contributorsLabel = gtkLabelNewWithMnemonic("_Contributors")
+hbox$packStart(contributorsLabel , FALSE , FALSE , 0) 
+
+contributorsName = gtkEntryNew() 
+gtkEntryNew$setWidthChars(5)
+contributorsLabel$setMnemonicWidget(contributorsName)
+hbox$packStart(contributorsName , FALSE , FALSE , 0) 
+#-------------------------------------------------------------------------------------------------------------------------
 
 # once user click the "ok" button, a function that will write to the file will be called 
 buttonOK <- gtkButtonNewFromStock("gtk-ok")
 gSignalConnect(buttonOK , "clicked" , saveUserInput)
 vbox$packStart(buttonOK , fill = F)
+
+
+
+
 
 
