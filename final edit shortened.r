@@ -1,4 +1,4 @@
-##Nicholas Corpuz & Khagay Nagdimov
+##Nicholas Corpuz & Kevin Ramdass & Khagay Nagdimov
 ## Legal Aid Statistical Tool, Graphical User Interface
 
 #------------------------------------------------------------------------------------------------------------------------------
