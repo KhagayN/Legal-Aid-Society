@@ -1,3 +1,5 @@
+
+# Function that will take in reps and return the reps without repetitions 
 input_alleles <- function(...) {
 	l <- list(...)
 	str <- ""
