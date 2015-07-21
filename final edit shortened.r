@@ -9,6 +9,28 @@
 library(MASS)
 library(RGtk2)
 
+# function that will take in rep/s and return a vector with the reps but, with unrepeatable elements 
+input_alleles <- function(...) {
+  l <- list(...)
+  str <- ""
+  
+  for (i in seq_along(l)) {
+    str <- paste(str, l[i], sep = ";")
+  }
+  
+  str = paste0(strsplit(str, '')[[1]][-1], collapse = '')
+  
+  tmp <- suppressWarnings(as.numeric(unlist(strsplit(str, ";"))))
+  tmp <- unique(tmp)
+  tmp <- sort(tmp)
+  
+  ret <- paste(c(tmp), collapse = ";")
+  print (ret)
+  return (ret)
+}
+
+
+
 # a one-dimensional collection of values, a.k.a. an array  
 header<- c("Suspect Name" , "Locus", "Alleles" , 
            "Suspect Alleles" , "Contributers" , "D/ND" , "Quant" , 
@@ -19,8 +41,10 @@ headerAndUserInput <- matrix(data = header,
                              nrow = 2 , 
                              ncol = 10, 
                              byrow = TRUE)
+# write the header to the file 
+currentDirectory <- getwd()
 write.matrix(headerAndUserInput, 
-             file = "C:/Users/KNagdimov@legal-aid.org/Desktop/DataEntry.csv" , 
+             file = currentDirectory , 
              sep = ",")
 
 #-----------------------------------------------------------------------------------------------------------------------------
@@ -36,11 +60,34 @@ saveUserInput <- function( ... ){
   # add the locus number to the matrix
   headerAndUserInput[2 , 2] <- the.locus 
   
+  # save suspect's alleles 
+  the.suspectsAlleles <- suspectsAllelesName$getText() 
+  headerAndUserInput[2 , 4 ] <- the.suspectsAlleles
+  
+  # save the number of contributors 
+  the.contributorsName <-contributorsName$getText()
+  headerAndUserInput[2 , 5] <- the.contributorsName
+  
+  # is it deducible or not?
+  the.deducName <- deducName$getText()
+  headerAndUserInput[2 , 6] <- the.deducName
+  
   # save the quant number into the matrix 
   the.quant <- quantName$getText()
   headerAndUserInput[2 , 7] <- the.quant 
   
-  write.matrix(headerAndUserInput, file = "C:/Users/KNagdimov@legal-aid.org/Desktop/DataEntry.csv" , sep = ",") 
+  # save rep1, rep2, and rep3 
+  the.rep1Name <- rep1Name$getText()
+  headerAndUserInput[2 , 8] <- the.rep1Name
+  the.rep2Name <- rep2Name$getText()
+  headerAndUserInput[2 , 9] <- the.rep2Name
+  the.rep3Name <- rep3Name$getText()
+  headerAndUserInput[2 , 10] <- the.rep3Name
+  
+  the.repsUnrepeated <- input_alleles(the.rep1Name , the.rep2Name , the.rep3Name)
+  headerAndUserInput[2 , 3] <- the.repsUnrepeated
+  
+  write.matrix(headerAndUserInput, file = currentDirectory , sep = ",") 
 }
 
 #-------------------------------------------------------------------------------------------------------------------------
@@ -82,7 +129,10 @@ locusName$setWidthChars(10)
 hbox$packStart(locusName , FALSE , FALSE , 0)
 #-------------------------------------------------------------------------------------------------------------------------
 # offer the user the ability to input the suspect's alleles 
-suspectsAllelesLabel = gtkLabelNewWithMnemonic("_Suspect's Alleles")
+hbox = gtkHBoxNew(FALSE , 8)
+vbox$packStart(hbox , FALSE , FALSE , 0)
+
+suspectsAllelesLabel = gtkLabelNewWithMnemonic("_Suspect's Alleles (Please separate by semicolon)")
 hbox$packStart(suspectsAllelesLabel , FALSE , FALSE , 0 )
 
 suspectsAllelesName = gtkEntryNew() 
@@ -92,8 +142,6 @@ hbox$packStart(suspectsAllelesName)
 
 #-------------------------------------------------------------------------------------------------------------------------
 # add the quant
-hbox = gtkHBoxNew(FALSE , 8)
-vbox$packStart(hbox , FALSE , FALSE , 0)
 
 quantLabel = gtkLabelNewWithMnemonic("_Quantitation")
 hbox$packStart(quantLabel , FALSE , FALSE , 0) # ----------------------------VBOX
@@ -102,11 +150,14 @@ hbox$packStart(quantLabel , FALSE , FALSE , 0) # ----------------------------VBO
 quantName = gtkEntryNew() # create a new entry for USER INPUT!
 quantName$setWidthChars(10)
 quantLabel$setMnemonicWidget(quantName)
-# pack in the filename object into the horizontal box
+# pack filename object into the horizontal box
 hbox$packStart(quantName , FALSE , FALSE , 0) 
 #-------------------------------------------------------------------------------------------------------------------------
 
 # contributors 
+hbox = gtkHBoxNew(FALSE , 8)
+vbox$packStart(hbox , FALSE , FALSE , 0)
+
 contributorsLabel = gtkLabelNewWithMnemonic("_Contributors")
 hbox$packStart(contributorsLabel , FALSE , FALSE , 0) 
 
@@ -116,12 +167,69 @@ contributorsLabel$setMnemonicWidget(contributorsName)
 hbox$packStart(contributorsName , FALSE , FALSE , 0) 
 #-------------------------------------------------------------------------------------------------------------------------
 
+# deducible or non-deducible 
+deducLabel = gtkLabelNewWithMnemonic("_Deducible or Nondeducible")
+hbox$packStart(deducLabel , FALSE , FALSE , 0)
+
+deducName = gtkEntryNew()
+deducName$setWidthChars(5)
+deducLabel$setMnemonicWidget(deducName)
+hbox$packStart(deducName , FALSE , FALSE , 0 )
+#-------------------------------------------------------------------------------------------------------------------------
+
+# REP 1 
+
+# start on a new row 
+hbox = gtkHBoxNew(FALSE , 8) 
+vbox$packStart(hbox , FALSE , FALSE , 0) 
+# create label
+rep1Label = gtkLabelNewWithMnemonic("_Rep1 (Please separate by semicolons)")
+hbox$packStart(rep1Label , FALSE , FALSE , 0)
+# create an area for user input 
+rep1Name = gtkEntryNew()
+rep1Name$setWidthChars(65)
+rep1Label$setMnemonicWidget(rep1Name)
+#connect label to widet 
+rep1Label$setMnemonicWidget(rep1Name)
+hbox$packStart(rep1Name , FALSE , FALSE , 0)
+#-------------------------------------------------------------------------------------------------------------------------
+
+# REP 2 
+
+# start on a new row
+hbox = gtkHBoxNew(FALSE , 8)
+vbox$packStart(hbox , FALSE , FALSE , 0)
+# create a new label 
+rep2Label = gtkLabelNewWithMnemonic("_Rep2 (Please separate by semicolons)")
+hbox$packStart(rep2Label , FALSE , FALSE , 0)
+# create box for user input
+rep2Name = gtkEntryNew()
+rep2Name$setWidthChars(65)
+rep2Label$setMnemonicWidget(rep2Name)
+hbox$packStart(rep2Name , FALSE , FALSE , 0)
+# connect label with widget 
+#-------------------------------------------------------------------------------------------------------------------------
+
+# REP 3
+
+# start on a new row
+hbox = gtkHBox(FALSE , 8)
+vbox$packStart(hbox , FALSE , FALSE , 0)
+# create label for rep3 
+rep3Label = gtkLabelNewWithMnemonic("_Rep3 (Please separate by semicolons)")
+hbox$packStart(rep3Label , FALSE , FALSE , 0)
+# create widget for user input
+rep3Name = gtkEntryNew()
+rep3Name$setWidthChars(65)
+rep3Label$setMnemonicWidget(rep3Name)
+hbox$packStart(rep3Name , FALSE , FALSE , 0)
+
+#-------------------------------------------------------------------------------------------------------------------------
 # once user click the "ok" button, a function that will write to the file will be called 
 buttonOK <- gtkButtonNewFromStock("gtk-ok")
 gSignalConnect(buttonOK , "clicked" , saveUserInput)
 vbox$packStart(buttonOK , fill = F)
-
-
+#-------------------------------------------------------------------------------------------------------------------------
 
 
 
