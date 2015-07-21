@@ -36,6 +36,18 @@ saveUserInput <- function( ... ){
   # add the locus number to the matrix
   headerAndUserInput[2 , 2] <- the.locus 
   
+  # save suspect's alleles 
+  the.suspectsAlleles <- suspectsAllelesName$getText() 
+  headerAndUserInput[2 , 4 ] <- the.suspectsAlleles
+  
+  # save the number of contributors 
+  the.contributorsName <-contributorsName$getText()
+  headerAndUserInput[2 , 5] <- the.contributorsName
+  
+  # is it deducible or not?
+  the.deducName <- deducName$getText()
+  headerAndUserInput[2 , 6] <- the.deducName
+  
   # save the quant number into the matrix 
   the.quant <- quantName$getText()
   headerAndUserInput[2 , 7] <- the.quant 
@@ -82,7 +94,10 @@ locusName$setWidthChars(10)
 hbox$packStart(locusName , FALSE , FALSE , 0)
 #-------------------------------------------------------------------------------------------------------------------------
 # offer the user the ability to input the suspect's alleles 
-suspectsAllelesLabel = gtkLabelNewWithMnemonic("_Suspect's Alleles")
+hbox = gtkHBoxNew(FALSE , 8)
+vbox$packStart(hbox , FALSE , FALSE , 0)
+
+suspectsAllelesLabel = gtkLabelNewWithMnemonic("_Suspect's Alleles (Please separate by semicolon)")
 hbox$packStart(suspectsAllelesLabel , FALSE , FALSE , 0 )
 
 suspectsAllelesName = gtkEntryNew() 
@@ -92,8 +107,6 @@ hbox$packStart(suspectsAllelesName)
 
 #-------------------------------------------------------------------------------------------------------------------------
 # add the quant
-hbox = gtkHBoxNew(FALSE , 8)
-vbox$packStart(hbox , FALSE , FALSE , 0)
 
 quantLabel = gtkLabelNewWithMnemonic("_Quantitation")
 hbox$packStart(quantLabel , FALSE , FALSE , 0) # ----------------------------VBOX
@@ -107,6 +120,9 @@ hbox$packStart(quantName , FALSE , FALSE , 0)
 #-------------------------------------------------------------------------------------------------------------------------
 
 # contributors 
+hbox = gtkHBoxNew(FALSE , 8)
+vbox$packStart(hbox , FALSE , FALSE , 0)
+
 contributorsLabel = gtkLabelNewWithMnemonic("_Contributors")
 hbox$packStart(contributorsLabel , FALSE , FALSE , 0) 
 
@@ -116,12 +132,23 @@ contributorsLabel$setMnemonicWidget(contributorsName)
 hbox$packStart(contributorsName , FALSE , FALSE , 0) 
 #-------------------------------------------------------------------------------------------------------------------------
 
+# deducible or non-deducible 
+deducLabel = gtkLabelNewWithMnemonic("_Deducible or Nondeducible")
+hbox$packStart(deducLabel , FALSE , FALSE , 0)
+
+deducName = gtkEntryNew()
+deducName$setWidthChars(5)
+deducLabel$setMnemonicWidget(deducName)
+hbox$packStart(deducName , FALSE , FALSE , 0 )
+#-------------------------------------------------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------------------------------------------------
 # once user click the "ok" button, a function that will write to the file will be called 
 buttonOK <- gtkButtonNewFromStock("gtk-ok")
 gSignalConnect(buttonOK , "clicked" , saveUserInput)
 vbox$packStart(buttonOK , fill = F)
 
-
+#-------------------------------------------------------------------------------------------------------------------------
 
 
 
