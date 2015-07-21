@@ -177,6 +177,7 @@ deducLabel$setMnemonicWidget(deducName)
 hbox$packStart(deducName , FALSE , FALSE , 0 )
 #-------------------------------------------------------------------------------------------------------------------------
 
+<<<<<<< HEAD
 # REP 1 
 
 # start on a new row 
@@ -224,11 +225,17 @@ rep3Name$setWidthChars(65)
 rep3Label$setMnemonicWidget(rep3Name)
 hbox$packStart(rep3Name , FALSE , FALSE , 0)
 
+=======
+>>>>>>> origin/master
 #-------------------------------------------------------------------------------------------------------------------------
 # once user click the "ok" button, a function that will write to the file will be called 
 buttonOK <- gtkButtonNewFromStock("gtk-ok")
 gSignalConnect(buttonOK , "clicked" , saveUserInput)
 vbox$packStart(buttonOK , fill = F)
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 #-------------------------------------------------------------------------------------------------------------------------
 
 
