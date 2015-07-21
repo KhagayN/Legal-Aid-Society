@@ -1,4 +1,4 @@
-##Nicholas Corpuz & Kevin Ramdass & Khagay Nagdimov
+##Nicholas Corpuz & Khagay Nagdimov
 ## Legal Aid Statistical Tool, Graphical User Interface
 
 #------------------------------------------------------------------------------------------------------------------------------
@@ -25,11 +25,11 @@ input_alleles <- function(...) {
   tmp <- sort(tmp)
   
   ret <- paste(c(tmp), collapse = ";")
-  print (ret)
+  if (ret == "") {
+    ret <- "-1"
+  }
   return (ret)
 }
-
-
 
 # a one-dimensional collection of values, a.k.a. an array  
 header<- c("Suspect Name" , "Locus", "Alleles" , 
@@ -44,14 +44,14 @@ headerAndUserInput <- matrix(data = header,
 # write the header to the file 
 currentDirectory <- getwd()
 write.matrix(headerAndUserInput, 
-             file = currentDirectory , 
+             file = paste(currentDirectory , "/Evidence_1.csv" , sep = "") ,  
              sep = ",")
 
 #-----------------------------------------------------------------------------------------------------------------------------
 
 saveUserInput <- function( ... ){ 
   # save the user's input for the suspect's name  
-  the.label <- suspectName$getText()
+  the.label <-trimws( suspectName$getText() , "b") 
   # append the suspect's name to the matrix 
   headerAndUserInput[2 , 1] <- the.label
   
@@ -87,7 +87,7 @@ saveUserInput <- function( ... ){
   the.repsUnrepeated <- input_alleles(the.rep1Name , the.rep2Name , the.rep3Name)
   headerAndUserInput[2 , 3] <- the.repsUnrepeated
   
-  write.matrix(headerAndUserInput, file = currentDirectory , sep = ",") 
+  write.matrix(headerAndUserInput, file = paste(currentDirectory , "/Evidence_1.csv" , sep = "") , sep = ",") 
 }
 
 #-------------------------------------------------------------------------------------------------------------------------
@@ -177,7 +177,6 @@ deducLabel$setMnemonicWidget(deducName)
 hbox$packStart(deducName , FALSE , FALSE , 0 )
 #-------------------------------------------------------------------------------------------------------------------------
 
-<<<<<<< HEAD
 # REP 1 
 
 # start on a new row 
@@ -225,17 +224,12 @@ rep3Name$setWidthChars(65)
 rep3Label$setMnemonicWidget(rep3Name)
 hbox$packStart(rep3Name , FALSE , FALSE , 0)
 
-=======
->>>>>>> origin/master
 #-------------------------------------------------------------------------------------------------------------------------
 # once user click the "ok" button, a function that will write to the file will be called 
 buttonOK <- gtkButtonNewFromStock("gtk-ok")
 gSignalConnect(buttonOK , "clicked" , saveUserInput)
 vbox$packStart(buttonOK , fill = F)
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
 #-------------------------------------------------------------------------------------------------------------------------
 
 
