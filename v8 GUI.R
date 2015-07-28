@@ -749,28 +749,22 @@ blank2[8:10] <--1
 
 #-------------------------------------------------------------------------------------------------------------
 
-
-
 #-------------------------------------------------------------------------------------------------------------------------
-
-
 
 saveUserInput <- function( ... ){
   # save the user's input 
   
   
   blank2[1] <- suspectName$getText()
+  blank2[2] <- "D8S1179"
+  blank2[4] <- sus_D8S1179$getText() 
+  blank[5] <- contributorsName$getText() 
   
   
-  
-  
-  # Combine the two blank matrix together
+  # Combine the two blank matrices together
   blank3<-c(blank,blank2)
-  print(blank3)
-  
   
   #write the final matrix to the specified place as the correct size and format
-  
   write(blank3, file ="C:/Users/KNagdimov@legal-aid.org/Desktop/DataEntry.csv", ncolumns = 10, append =T, sep =",")
   
 }
