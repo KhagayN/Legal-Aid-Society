@@ -1,32 +1,28 @@
-##Nicholas Corpuz & Khagay Nagdimov
+##Nicholas Corpuz & Kevin Ramdass & Khagay Nagdimov
 ## Legal Aid Statistical Tool, Graphical User Interface
 
-# If running for the first time un comment:
+# If running for the first time uncomment:
 #install.packages("RGtk2","gtk+")
 
-
-
 ## first, create blank matrix to be filled by variable values
+library("RGtk2")
+
+# format Excel sheet that will store the output of this program
 x <-1:10
 y<-11:20
-# designate matrix size 
 
+# designate matrix size 
 blank<-matrix(x,1,10)
 blank2<-matrix(y,1,10)
 
-
-
-library("RGtk2")
-
-
-#--------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------
 # create a window
 window = gtkWindow()
 
 # add a title
 window["title"] = "Legal Aid Statistical Tool (Beta)"
 # add a frame for aesthetic purposes 
-frame = gtkFrameNew("Specify Computational Constants...")
+frame = gtkFrameNew("Legal Aid Statistical Tool")
 window$add(frame)
 
 # create and add a new vertical container box 
@@ -34,10 +30,10 @@ vbox = gtkVBoxNew(FALSE , 8)
 vbox$setBorderWidth(24)                 #------------------------------VBOX
 frame$add(vbox)
 
-
+# create buton 
 buttonOK <- gtkButtonNewFromStock("gtk-ok")
 gSignalConnect(buttonOK , "clicked" , saveUserInput)
-vbox$packStart(buttonOK , fill = F)
+vbox$packStart(buttonOK , fill = T)
 
 #visual interface for inputing the name of the suspect "suspectName"
 # create a horizontal container 
@@ -70,8 +66,6 @@ quantLabel$setMnemonicWidget(quantName)
 # pack in the filename object into the horizontal box
 hbox$packStart(quantName , FALSE , FALSE , 0) 
 
-
-
 #-----------------------------------------------------------------------------------------------------
 
 #visual interface for inputing number of number of contributors to the sample "contributorsName"
@@ -93,7 +87,6 @@ contLabel$setMnemonicWidget(contributorsName)
 hbox$packStart(contributorsName , FALSE , FALSE , 0) 
 
 
-
 #-----------------------------------------------------------------------------------------------------
 # visual interface for inputting deducible or non-deducible mixture "deducName"
 
@@ -106,18 +99,6 @@ deducLabel$setMnemonicWidget(deducName)
 hbox$packStart(deducName , FALSE , FALSE , 0 )
 
 #-----------------------------------------------------------------------------------------------------
-#work out frame bug to improve asthetics of the GUI 
-## add a second frame for aesthetic purposes (why does this not work?)
-#frame = gtkFrameNew("Specify Loci Observed...")
-#window$add(frame)
-
-
-# add a title
-# add a frame for aesthetic purposes 
-frame = gtkFrameNew("Legal Aid Statistical Tool")
-window$add(frame)
-#-----------------------------------------------------------------------------------------------------
-
 
 # add a horizontal container to display option to input suspect alleles 
 hbox = gtkHBoxNew(FALSE , 8) # create a new horizontal box 
@@ -127,8 +108,6 @@ hbox$packStart(label , expand = FALSE, FALSE , 0) # add that label to the horizo
 
 #add a separator
 vbox$packStart(gtkHSeparatorNew() , FALSE , FALSE , 0)
-
-
 
 #--------------------------------------------------------------------------------------------------------
 
@@ -795,7 +774,7 @@ saveUserInput <- function( ... ){
   
   #write the final matrix to the specified place as the correct size and format
   
-  write(blank3, file ="C:/Users/NCorpuz/Desktop/DataEntry.csv", ncolumns = 10, append =T, sep =",")
+  write(blank3, file ="C:/Users/KNagdimov@legal-aid.org/Desktop/DataEntry.csv", ncolumns = 10, append =T, sep =",")
   
 }
 

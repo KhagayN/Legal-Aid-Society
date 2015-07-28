@@ -1,5 +1,5 @@
 
-#Function that will take in reps and return the reps without repetitions 
+#Function that will take in reps and return the reps without repetitions. Goal: input the reps without repetitions to the allele's cell 
 input_alleles <- function(...) {
 	l <- list(...)
 	str <- ""
