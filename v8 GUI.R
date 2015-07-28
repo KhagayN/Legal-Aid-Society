@@ -35,22 +35,23 @@ buttonOK <- gtkButtonNewFromStock("gtk-ok")
 gSignalConnect(buttonOK , "clicked" , saveUserInput)
 vbox$packStart(buttonOK , fill = T)
 
-#visual interface for inputing the name of the suspect "suspectName"
+#visual interface for inputing the name of the suspect "caseName"
 # create a horizontal container 
 hbox = gtkHBoxNew(FALSE , 8)
 # we packstarted the horizontal box into the vertical box 
 vbox$packStart(hbox , FALSE , FALSE , 0)# -----------------------------VBOX 
-
+#*****************************************************************************************
 # add a label to the vertical box 
-suspectLabel = gtkLabelNewWithMnemonic("_Suspect Name")
-hbox$packStart(suspectLabel , FALSE , FALSE , 0) # ----------------------------VBOX
+caseLabel = gtkLabelNewWithMnemonic("_Case Name")
+hbox$packStart(caseLabel , FALSE , FALSE , 0) # ----------------------------VBOX
 
-# add an entry in the second column; named "suspectName"
-suspectName = gtkEntryNew() # create a new entry for USER INPUT!
-suspectName$setWidthChars(30)
-suspectLabel$setMnemonicWidget(suspectName)
+# add an entry in the second column; named "caseName"
+caseName = gtkEntryNew() # create a new entry for USER INPUT!
+caseName$setWidthChars(30)
+caseLabel$setMnemonicWidget(caseName)
 # pack in the filename object into the horizontal box
-hbox$packStart(suspectName , FALSE , FALSE , 0) 
+hbox$packStart(caseName , FALSE , FALSE , 0) 
+#********************************************************************************************
 #-----------------------------------------------------------------------------------------------------
 
 # visual interface for inputing Quantity of DNA "quantName"
@@ -100,10 +101,10 @@ hbox$packStart(deducName , FALSE , FALSE , 0 )
 
 #-----------------------------------------------------------------------------------------------------
 
-# add a horizontal container to display option to input suspect alleles 
+# add a horizontal container to display option to input known alleles 
 hbox = gtkHBoxNew(FALSE , 8) # create a new horizontal box 
 vbox$packStart(hbox , FALSE , FALSE , 0) 
-label = gtkLabelNewWithMnemonic("Input the Suspect's Alleles") # create a new label 
+knownLabel = gtkLabelNewWithMnemonic("Input the Suspect's Alleles") # create a new label 
 hbox$packStart(label , expand = FALSE, FALSE , 0) # add that label to the horizontal box
 
 #add a separator
@@ -126,7 +127,6 @@ hbox$packStart(sus_D8S1179 , FALSE , FALSE , 0)
 #--------------------------------------------------------------------------------------------------------
 
 #sus_D21S11
-
 sus_D21S11_label = gtkLabelNewWithMnemonic("D21S11") # create a new label 
 hbox$packStart(sus_D21S11_label , FALSE, FALSE , 0)
 
@@ -674,21 +674,21 @@ hbox$packStart(rep3_TPOX , FALSE , FALSE , 0)
 
 #rep3_D18S51
 rep3_D18S51 = gtkEntryNew()
-rep3_D18S51$setWidthChars(15)
+rep3_D18S51$setWidthChars(7)
 hbox$packStart(rep3_D18S51 , FALSE , FALSE , 0) 
 
 #---------------------------------------------------------------------------------
 
 #rep3_D5S818
 rep3_D5S818 = gtkEntryNew()
-rep3_D5S818$setWidthChars(15)
+rep3_D5S818$setWidthChars(7)
 hbox$packStart(rep3_D5S818 , FALSE , FALSE , 0) 
 
 #---------------------------------------------------------------------------------
 
 #rep3_FGA
 rep3_FGA = gtkEntryNew()
-rep3_FGA$setWidthChars(15)
+rep3_FGA$setWidthChars(7)
 hbox$packStart(rep3_FGA , FALSE , FALSE , 0) 
 
 #-------------------------------------------------------------------------------------------------------
@@ -751,12 +751,11 @@ blank2[8:10] <--1
 
 #-------------------------------------------------------------------------------------------------------------------------
 
-saveUserInput <- function( ... ){
-  # save the user's input 
-  
-  
-  blank2[1] <- suspectName$getText()
-  blank2[2] <- "D8S1179"
+  saveUserInput <- function( ... ){
+  # save the user's input
+
+  blank2[1] <- caseName$getText()
+  #blank2[7] <-quant$getText()
   blank2[4] <- sus_D8S1179$getText() 
   blank[5] <- contributorsName$getText() 
   
@@ -765,7 +764,45 @@ saveUserInput <- function( ... ){
   blank3<-c(blank,blank2)
   
   #write the final matrix to the specified place as the correct size and format
-  write(blank3, file ="C:/Users/KNagdimov@legal-aid.org/Desktop/DataEntry.csv", ncolumns = 10, append =T, sep =",")
+  write(blank3, file ="C:/Users/KNagdimov@legal-aid.org/Desktop/DataEntry.csv", ncolumns = 10, append =F, sep =",")
+
+  ##***********************************************************************************************************************************
+  
+  row1 <- 1:16
+  row2 <- 1:16
+  row3 <- 1:16
+  
+  # First parameter specifies where the data is being retrieved from. The latter 2 specify the number of cells within the matrix 
+  alleleRow1 <- matrix( row1 , 1 , 16)
+  alleleRow2 <- matrix( row2 , 1 , 16)
+  alleleRow3 <- matrix( row3 , 1 , 16)
+  
+  # combine the matrices which will store the known alleles 
+  row1row2Combined <- c(alleleRow1 , alleleRow2)
+  allelesCombined <- c(row1row2Combined , alleleRow3)
+  
+  # input the rep's alleles into the matrix 
+  allelesCombined[1] <- rep1_D8S1179$getText()
+  allelesCombined[2] <- rep1_D21S11$getText()
+  allelesCombined[3] <- rep1_D7S820$getText()
+  allelesCombined[4] <- rep1_CSF1PO$getText()
+  allelesCombined[5] <- rep1_D3S1358$getText()
+  allelesCombined[6] <- rep1_TH01$getText()
+  allelesCombined[7] <- rep1_D13S317$getText()
+  allelesCombined[8] <- rep1_D16S539$getText()
+  allelesCombined[9] <- rep1_D2S1338$getText()
+  allelesCombined[10] <- rep1_D19S433$getText()
+  allelesCombined[11] <- rep1_vWA$getText()
+  allelesCombined[12] <- rep1_vWA$getText()
+  allelesCombined[13] <- rep1_TPOX$getText()
+  allelesCombined[14] <- rep1_D18S51$getText()
+  allelesCombined[15] <- rep1_D5S818$getText()
+  allelesCombined[16] <- rep1_FGA$getText() 
+  
+  
+  write(allelesCombined , file = "C:/Users/KNagdimov@legal-aid.org/Desktop/DataEntry.csv" , ncolumns = 16 , append = T , sep = ",")
+  
+  ##***********************************************************************************************************************************  
   
 }
 
